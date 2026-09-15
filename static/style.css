@@ -1,78 +1,505 @@
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f4f6f8;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7fb;
+    color: #172033;
+    line-height: 1.6;
 }
 
 .container {
-    width: 70%;
-    max-width: 900px;
-    margin: 50px auto;
-    background: white;
-    padding: 35px;
-    border-radius: 12px;
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
-h1 {
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
     text-align: center;
+    padding: 55px 20px 35px;
+}
+
+.hero-icon {
+    font-size: 45px;
+    margin-bottom: 8px;
+}
+
+.hero h1 {
+    font-size: 42px;
+    color: #111827;
     margin-bottom: 10px;
 }
 
 .subtitle {
-    text-align: center;
+    max-width: 650px;
+    margin: auto;
+    color: #667085;
+    font-size: 17px;
+}
+
+.features {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.features span {
+    background: white;
+    border: 1px solid #e4e7ec;
+    border-radius: 20px;
+    padding: 7px 14px;
+    color: #475467;
+    font-size: 13px;
+}
+
+
+/* =========================
+   ANALYZER CARD
+========================= */
+
+.analyzer-card,
+.result {
+    background: white;
+    border: 1px solid #e4e7ec;
+    border-radius: 16px;
+    padding: 35px;
+    box-shadow: 0 8px 30px rgba(16, 24, 40, 0.06);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 30px;
 }
 
+.card-header h2 {
+    font-size: 25px;
+    margin-bottom: 5px;
+}
+
+.card-header p,
+.result-header p {
+    color: #667085;
+    font-size: 14px;
+}
+
+.card-icon {
+    font-size: 35px;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
 label {
     display: block;
-    margin-top: 20px;
-    font-weight: bold;
+    margin: 22px 0 10px;
+    font-weight: 700;
+    color: #344054;
 }
 
 input,
 textarea {
+    font-family: inherit;
+}
+
+.upload-box {
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    background: #f8fafc;
+    transition: 0.2s;
+}
+
+.upload-box:hover {
+    border-color: #ff9900;
+    background: #fffaf3;
+}
+
+.upload-box input {
     width: 100%;
-    margin-top: 10px;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    cursor: pointer;
+}
+
+.upload-content {
+    margin-top: 12px;
+}
+
+.upload-icon {
+    font-size: 32px;
+}
+
+.upload-content strong {
+    display: block;
+    font-size: 15px;
+}
+
+.upload-content small {
+    color: #667085;
 }
 
 textarea {
+    width: 100%;
+    min-height: 220px;
+    padding: 16px;
+    border: 1px solid #d0d5dd;
+    border-radius: 10px;
     resize: vertical;
+    font-size: 14px;
+    outline: none;
 }
 
-button {
-    display: block;
-    margin: 25px auto 0;
-    padding: 13px 25px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
+textarea:focus {
+    border-color: #ff9900;
+    box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.12);
 }
+
+textarea::placeholder {
+    color: #98a2b3;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+button {
+    width: 100%;
+    margin-top: 25px;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: #ff9900;
+    color: #111827;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #ec8b00;
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   ERROR
+========================= */
+
+.error {
+    margin-top: 25px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    background: #fff1f3;
+    border: 1px solid #fecdca;
+    color: #b42318;
+}
+
+
+/* =========================
+   RESULT
+========================= */
 
 .result {
     margin-top: 35px;
+}
+
+.result-header {
+    margin-bottom: 30px;
+}
+
+.result-header h2 {
+    font-size: 27px;
+}
+
+
+/* =========================
+   SCORE
+========================= */
+
+.score-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 45px;
+    background: #f8fafc;
+    border-radius: 14px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.score-circle {
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    border: 10px solid #ff9900;
+    background: white;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 5px 20px rgba(16, 24, 40, 0.08);
+}
+
+.score-number {
+    font-size: 42px;
+    font-weight: 800;
+}
+
+.score-label {
+    color: #667085;
+    font-size: 13px;
+}
+
+.score-message h2 {
+    font-size: 21px;
+    margin-bottom: 5px;
+}
+
+.score-message p {
+    max-width: 450px;
+    color: #667085;
+}
+
+
+/* =========================
+   SKILLS
+========================= */
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.skill-card {
     padding: 25px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 14px;
+    border: 1px solid #e4e7ec;
 }
 
-.percentage {
+.skill-card.matched {
+    background: #f6fef9;
+}
+
+.skill-card.missing {
+    background: #fffbf5;
+}
+
+.skill-card h3 {
+    margin-bottom: 18px;
+    font-size: 18px;
+}
+
+.skill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.skill-tag {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    background: white;
+    border: 1px solid #d0d5dd;
+}
+
+
+/* =========================
+   RECOMMENDATIONS
+========================= */
+
+.recommendations {
+    margin-top: 25px;
+    padding: 28px;
+    border-radius: 14px;
+    border: 1px solid #e4e7ec;
+    background: #f8fafc;
+}
+
+.recommendation-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.recommendation-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #fff0d6;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+}
+
+.recommendation-header h2 {
+    font-size: 21px;
+}
+
+.recommendation-header p {
+    color: #667085;
+    font-size: 13px;
+}
+
+.recommendation-list {
+    display: grid;
+    gap: 12px;
+}
+
+.recommendation-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+
+    background: white;
+    border: 1px solid #e4e7ec;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.recommendation-number {
+    min-width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #ff9900;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 700;
+}
+
+.recommendation-content h3 {
+    text-transform: capitalize;
+    font-size: 16px;
+    margin-bottom: 3px;
+}
+
+.recommendation-content p {
+    color: #667085;
+    font-size: 13px;
+}
+
+
+/* =========================
+   AGAIN BUTTON
+========================= */
+
+.again {
     text-align: center;
-    font-size: 50px;
-    font-weight: bold;
-    margin: 20px;
+    margin-top: 30px;
 }
 
-.error {
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
+.again a {
+    display: inline-block;
+    text-decoration: none;
+    background: #111827;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.again a:hover {
+    background: #374151;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 50px;
+    color: #667085;
+}
+
+footer p:first-child {
+    font-weight: 700;
+    color: #344054;
+}
+
+footer .tech {
+    margin-top: 5px;
+    font-size: 13px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .container {
+        width: 94%;
+    }
+
+    .hero {
+        padding-top: 35px;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .subtitle {
+        font-size: 15px;
+    }
+
+    .analyzer-card,
+    .result {
+        padding: 22px;
+    }
+
+    .card-header {
+        align-items: flex-start;
+    }
+
+    .score-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .score-circle {
+        width: 150px;
+        height: 150px;
+    }
+
+    .recommendation-header {
+        align-items: flex-start;
+    }
 }

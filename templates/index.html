@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AWS Job Detector</title>
+    <title>AWS Job Detector | Resume Analyzer</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
@@ -15,95 +15,338 @@
 
     <div class="container">
 
-        <h1>🚀 AWS Job Detector</h1>
+        <!-- Header -->
+        <header class="hero">
 
-        <p class="subtitle">
-            Upload your resume and compare it with a job description.
-        </p>
+            <div class="hero-icon">🚀</div>
+
+            <h1>AWS Job Detector</h1>
+
+            <p class="subtitle">
+                Analyze your resume against a job description
+                and discover your skill match instantly.
+            </p>
+
+            <div class="features">
+
+                <span>✓ Resume Analysis</span>
+                <span>✓ Skill Matching</span>
+                <span>✓ Missing Skills</span>
+                <span>✓ Learning Recommendations</span>
+
+            </div>
+
+        </header>
+
+
+        <!-- Analyzer Card -->
+        <div class="analyzer-card">
+
+            <div class="card-header">
+
+                <div>
+                    <h2>📄 Resume Analysis</h2>
+
+                    <p>
+                        Upload your resume and paste the job description
+                        to calculate your skill match.
+                    </p>
+                </div>
+
+                <div class="card-icon">
+                    📑
+                </div>
+
+            </div>
+
+
+            <form method="POST"
+                  enctype="multipart/form-data">
+
+                <!-- Resume Upload -->
+
+                <label for="resume">
+                    📄 Upload Resume
+                </label>
+
+                <div class="upload-box">
+
+                    <input
+                        type="file"
+                        id="resume"
+                        name="resume"
+                        accept=".pdf"
+                        required
+                    >
+
+                    <div class="upload-content">
+
+                        <div class="upload-icon">
+                            📤
+                        </div>
+
+                        <strong>
+                            Choose your resume
+                        </strong>
+
+                        <small>
+                            PDF files only
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Job Description -->
+
+                <label for="job_description">
+                    💼 Job Description
+                </label>
+
+                <textarea
+                    id="job_description"
+                    name="job_description"
+                    rows="10"
+                    placeholder="Paste the job description here..."
+                    required
+                ></textarea>
+
+
+                <!-- Analyze Button -->
+
+                <button type="submit">
+                    🔍 Analyze Resume
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- Error -->
 
         {% if error %}
+
         <div class="error">
-            {{ error }}
+            ⚠️ {{ error }}
         </div>
+
         {% endif %}
 
-        <form method="POST" enctype="multipart/form-data">
 
-            <label for="resume">
-                Upload Resume (PDF)
-            </label>
-
-            <input
-                type="file"
-                id="resume"
-                name="resume"
-                accept=".pdf"
-                required
-            >
-
-            <label for="job_description">
-                Job Description
-            </label>
-
-            <textarea
-                id="job_description"
-                name="job_description"
-                rows="10"
-                placeholder="Paste the job description here..."
-                required
-            ></textarea>
-
-            <button type="submit">
-                🔍 Analyze Resume
-            </button>
-
-        </form>
+        <!-- Analysis Result -->
 
         {% if result %}
 
         <div class="result">
 
-            <h2>📊 Analysis Result</h2>
+            <div class="result-header">
 
-            <div class="percentage">
-                {{ result.match_percentage }}%
+                <div>
+                    <h2>📊 Analysis Result</h2>
+
+                    <p>
+                        Your resume compatibility with this job
+                    </p>
+                </div>
+
             </div>
 
-            <h3>✅ Matched Skills</h3>
 
-            {% if result.matched_skills %}
+            <!-- Score Section -->
 
-            <ul>
-                {% for skill in result.matched_skills %}
-                <li>{{ skill }}</li>
-                {% endfor %}
-            </ul>
+            <div class="score-section">
 
-            {% else %}
+                <div class="score-circle">
 
-            <p>No matching skills found.</p>
+                    <div class="score-number">
+                        {{ result.match_percentage }}%
+                    </div>
+
+                    <div class="score-label">
+                        Match Score
+                    </div>
+
+                </div>
+
+
+                <div class="score-message">
+
+                    <h2>
+                        👍 {{ result.match_message }}
+                    </h2>
+
+                    <p>
+                        {{ result.match_description }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Skills -->
+
+            <div class="skills-grid">
+
+                <!-- Matched Skills -->
+
+                <div class="skill-card matched">
+
+                    <h3>
+                        ✅ Matched Skills
+                    </h3>
+
+                    {% if result.matched_skills %}
+
+                    <div class="skill-list">
+
+                        {% for skill in result.matched_skills %}
+
+                        <span class="skill-tag">
+                            ✓ {{ skill }}
+                        </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                    {% else %}
+
+                    <p>
+                        No matching skills found.
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Missing Skills -->
+
+                <div class="skill-card missing">
+
+                    <h3>
+                        📚 Missing Skills
+                    </h3>
+
+                    {% if result.missing_skills %}
+
+                    <div class="skill-list">
+
+                        {% for skill in result.missing_skills %}
+
+                        <span class="skill-tag">
+                            + {{ skill }}
+                        </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                    {% else %}
+
+                    <p>
+                        No major missing skills found.
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- Learning Recommendations -->
+
+            {% if result.recommendations %}
+
+            <div class="recommendations">
+
+                <div class="recommendation-header">
+
+                    <div class="recommendation-icon">
+                        🎯
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Recommended Skills to Learn
+                        </h2>
+
+                        <p>
+                            Improve these skills to increase your
+                            job compatibility.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="recommendation-list">
+
+                    {% for item in result.recommendations %}
+
+                    <div class="recommendation-item">
+
+                        <div class="recommendation-number">
+                            {{ loop.index }}
+                        </div>
+
+                        <div class="recommendation-content">
+
+                            <h3>
+                                {{ item.skill }}
+                            </h3>
+
+                            <p>
+                                {{ item.recommendation }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
 
             {% endif %}
 
-            <h3>❌ Missing Skills</h3>
 
-            {% if result.missing_skills %}
+            <!-- Analyze Again -->
 
-            <ul>
-                {% for skill in result.missing_skills %}
-                <li>{{ skill }}</li>
-                {% endfor %}
-            </ul>
+            <div class="again">
 
-            {% else %}
+                <a href="/">
+                    🔄 Analyze Another Resume
+                </a>
 
-            <p>No major missing skills found.</p>
-
-            {% endif %}
+            </div>
 
         </div>
 
         {% endif %}
+
+
+        <!-- Footer -->
+
+        <footer>
+
+            <p>
+                AWS Job Detector • Resume & Skill Matching Tool
+            </p>
+
+            <p class="tech">
+                Python • Flask • Docker • Git • GitHub
+            </p>
+
+        </footer>
 
     </div>
 
