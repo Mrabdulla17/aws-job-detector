@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request
 from pypdf import PdfReader
+from docx import Document
+from werkzeug.utils import secure_filename
 import os
+
 
 app = Flask(__name__)
 
@@ -58,19 +61,57 @@ SKILL_RECOMMENDATIONS = {
 }
 
 
-def extract_resume_text(file):
+def extract_pdf_text(file_path):
     """Extract text from a PDF resume."""
 
-    reader = PdfReader(file)
+    reader = PdfReader(file_path)
+
     text = ""
 
     for page in reader.pages:
         page_text = page.extract_text()
 
         if page_text:
-            text += page_text.lower()
+            text += page_text.lower() + "\n"
 
     return text
+
+
+def extract_docx_text(file_path):
+    """Extract text from a DOCX resume."""
+
+    document = Document(file_path)
+
+    text = ""
+
+    # Extract normal paragraphs
+    for paragraph in document.paragraphs:
+        if paragraph.text:
+            text += paragraph.text.lower() + "\n"
+
+    # Extract text from tables
+    for table in document.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                if cell.text:
+                    text += cell.text.lower() + "\n"
+
+    return text
+
+
+def extract_resume_text(file_path):
+    """Extract text from PDF or DOCX resume."""
+
+    extension = os.path.splitext(file_path)[1].lower()
+
+    if extension == ".pdf":
+        return extract_pdf_text(file_path)
+
+    elif extension == ".docx":
+        return extract_docx_text(file_path)
+
+    else:
+        raise ValueError("Unsupported file format")
 
 
 def find_skills(text):
@@ -91,9 +132,11 @@ def generate_recommendations(missing_skills):
     recommendations = []
 
     for skill in missing_skills:
+
         recommendation = SKILL_RECOMMENDATIONS.get(skill)
 
         if recommendation:
+
             recommendations.append({
                 "skill": skill,
                 "recommendation": recommendation
@@ -121,7 +164,7 @@ def index():
 
         # Check resume
         if not resume or resume.filename == "":
-            error = "Please upload a PDF resume."
+            error = "Please upload a PDF or DOCX resume."
 
             return render_template(
                 "index.html",
@@ -129,8 +172,15 @@ def index():
             )
 
         # Check file type
-        if not resume.filename.lower().endswith(".pdf"):
-            error = "Please upload a PDF file only."
+        filename = secure_filename(resume.filename)
+
+        extension = os.path.splitext(filename)[1].lower()
+
+        allowed_extensions = [".pdf", ".docx"]
+
+        if extension not in allowed_extensions:
+
+            error = "Please upload a PDF or DOCX file only."
 
             return render_template(
                 "index.html",
@@ -140,7 +190,7 @@ def index():
         # Save resume
         resume_path = os.path.join(
             app.config["UPLOAD_FOLDER"],
-            resume.filename
+            filename
         )
 
         resume.save(resume_path)
@@ -148,13 +198,19 @@ def index():
         try:
 
             # Extract resume text
-            resume_text = extract_resume_text(resume)
+            resume_text = extract_resume_text(
+                resume_path
+            )
 
             # Find skills in resume
-            resume_skills = find_skills(resume_text)
+            resume_skills = find_skills(
+                resume_text
+            )
 
             # Find skills in job description
-            job_skills = find_skills(job_description)
+            job_skills = find_skills(
+                job_description
+            )
 
             # Find matched skills
             matched_skills = sorted(
@@ -194,6 +250,7 @@ def index():
             if match_percentage >= 80:
 
                 match_message = "Excellent Match!"
+
                 match_description = (
                     "Your resume matches most of the "
                     "required skills for this job."
@@ -202,6 +259,7 @@ def index():
             elif match_percentage >= 60:
 
                 match_message = "Good Match!"
+
                 match_description = (
                     "You have several relevant skills, "
                     "but there are some areas you can improve."
@@ -210,6 +268,7 @@ def index():
             elif match_percentage >= 40:
 
                 match_message = "Moderate Match"
+
                 match_description = (
                     "You have some relevant skills, "
                     "but you should improve the missing skills."
@@ -218,6 +277,7 @@ def index():
             else:
 
                 match_message = "Needs Improvement"
+
                 match_description = (
                     "Your resume has limited matching skills "
                     "for this job. Consider learning the missing skills."
@@ -243,7 +303,7 @@ def index():
 
             error = (
                 "Unable to analyze the resume. "
-                "Please make sure the PDF is valid."
+                "Please make sure the PDF or DOCX file is valid."
             )
 
             print("Error:", e)
