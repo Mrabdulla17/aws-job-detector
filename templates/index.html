@@ -33,6 +33,7 @@
                 <span>✓ Skill Matching</span>
                 <span>✓ Missing Skills</span>
                 <span>✓ Learning Recommendations</span>
+                <span>✓ Download Report</span>
 
             </div>
 
@@ -319,9 +320,17 @@
             {% endif %}
 
 
-            <!-- Analyze Again -->
+            <!-- Report Actions -->
 
             <div class="again">
+
+                {% if result.report_filename %}
+
+                <a href="{{ url_for('download_report', filename=result.report_filename) }}">
+                    📥 Download Analysis Report
+                </a>
+
+                {% endif %}
 
                 <a href="/">
                     🔄 Analyze Another Resume
@@ -343,7 +352,7 @@
             </p>
 
             <p class="tech">
-                Python • Flask • PyPDF • python-docx • Docker • Git • GitHub
+                Python • Flask • PyPDF • python-docx • ReportLab • Docker • Git • GitHub
             </p>
 
         </footer>
