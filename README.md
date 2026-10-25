@@ -8,16 +8,6 @@ A Flask web app that compares a resume with a job description. It shows how well
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
 
-## 📸 Demo
-
-| Home page | Analysis result |
-|---|---|
-| ![Home page](screenshots/01-home.png) | ![Analysis result](screenshots/02-result.png) |
-
-| Matched and missing skills | PDF report |
-|---|---|
-| ![Skills](screenshots/03-skills.png) | ![PDF report](screenshots/04-report.png) |
-
 ## 🎯 What It Does
 
 Job seekers often don't know how well their resume fits a role. This app answers that in seconds:
